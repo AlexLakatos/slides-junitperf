@@ -1,0 +1,245 @@
+<!DOCTYPE HTML>
+<html lang="en-US" class="fade">
+<!-- 
+  ^ You can control a few things with the <html> element's classes:
+
+  "fade"      - smooth fade between slides
+  "nonumbers" - remove the slide numbering after the progress bar
+-->
+
+<head>
+<title>JUnitPerf</title>
+<!-- 
+    ^ Don't forget a good title - they show up as bookmarks and in Google 
+  -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1274, user-scalable=no">
+<link rel="stylesheet" href="themes/mozilla/styles/style.css">
+<style type="text/css">
+    /* Add your own styles here */
+</style>
+</head>
+<body class="list">
+
+<header class="caption">
+  <h1>JUnitPerf</h1>
+  <p class="footer">Alex Lakatos, Florin Strugariu, <a href="http://twitter.com/">SoftVision</a> or <a href="mailto:">ateam@softvision.ro</a></p>
+</header>
+
+<!-- 
+  The following is a slide, it needs a class of "slide" and it doesn't 
+  hurt to keep the right semantic elements in there, too.
+  IMPORTANT: each slide needs its own unique ID - this will become its
+  URL and this is how this slide system works!
+-->
+
+<div id="cover" class="slide"><div>
+  <section>
+    <header>
+      <h2>JUnitPerf</h2>
+    </header>
+    <small class="byline">
+        Alex Lakatos, Florin Strugariu, SoftVision, QA TechTalk, str. Republicii, 26-09-2012
+    </small>
+  <footer class="notes">
+  </footer>
+  </section>
+</div></div>
+
+<div id="whatis" class="slide"><div>
+  <section>
+    <header>
+      <h2>What is JUnitPerf?</h2>
+    </header>
+    <ul>
+      <li>collection of JUnit test decorators
+      <ul>
+          <li>TimedTest</li>
+          <li>LoadTest</li>
+        </ul> </li>
+    </ul> 
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+
+<div id="why" class="slide"><div>
+  <section>
+    <header>
+      <h2>Why Use JUnitPerf?</h2>
+    </header>
+    <ul>
+      <li>transparently decorate existing JUnit tests
+        <ul>
+          <li>run automatically and independent of your other JUnit tests</li>
+          <li>avoid grouping your JUnitPerf tests with your other JUnit tests</li>
+        </ul>  
+      </li>
+      <li>quantitative performance and/or scalability requirements<ul>
+          <li>refactoring code</li>
+        </ul></li>
+      <li>automatically test and check that requirements are being met now and in the future</li>
+    </ul> 
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+
+<div id="need" class="slide"><div>
+  <section>
+    <header>
+      <h2>What do you need?</h2>
+    </header>
+    <ul class="inner">
+      <li class="active">JUnitPerf 1.9.1</li>
+      <li>Java 2</li>
+      <li>JUnit 3.5 || ></li>
+      <li>Windows || Unix-like</li>
+      <li>Ant [for building]</li>
+    </ul> 
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+
+
+<div id="timedtest" class="slide"><div>
+  <section>
+    <header>
+      <h2>Example Timed Test </h2>
+    </header>
+    <pre>
+        import com.clarkware.junitperf.*;
+        import junit.framework.Test;
+        public class ExampleTimedTest {
+            public static Test suite() {
+                long maxElapsedTime = 1000;
+                Test testCase = new ExampleTestCase("testOneSecondResponse");
+                Test timedTest = new TimedTest(testCase, maxElapsedTime);
+                return timedTest;
+            }
+            public static void main(String[] args) {
+                junit.textui.TestRunner.run(suite());
+            }
+        }
+</pre>
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+  
+<div id="loadtest" class="slide"><div>
+  <section>
+    <header>
+      <h2>Example Load Test </h2>
+    </header>
+    <pre>
+        import com.clarkware.junitperf.*;
+        import junit.framework.Test;
+        public class ExampleThroughputUnderLoadTest {
+            public static Test suite() {
+                int maxUsers = 10;
+                long maxElapsedTime = 1500;
+                Test testCase = new ExampleTestCase("testOneSecondResponse");
+                Test loadTest = new LoadTest(testCase, maxUsers);
+                Test timedTest = new TimedTest(loadTest, maxElapsedTime);
+                return timedTest;
+            }
+            public static void main(String[] args) {
+                junit.textui.TestRunner.run(suite());
+            }
+        }
+</pre>
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+
+ <div id="testsuite" class="slide"><div>
+  <section>
+    <header>
+      <h2>Example Test Suite</h2>
+    </header>
+    <pre>
+        import junit.framework.Test;
+        import junit.framework.TestSuite;
+        public class ExamplePerfTestSuite {
+            public static Test suite() {
+                TestSuite suite = new TestSuite();
+                suite.addTest(ExampleTimedTest.suite());
+                suite.addTest(ExampleLoadTest.suite());
+                return suite;
+            }
+            public static void main(String[] args) {
+                junit.textui.TestRunner.run(suite());
+            }
+        }
+    </pre>
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+
+<div id="write" class="slide"><div>
+  <section>
+    <header>
+      <h2>How do we write effective JUnitPerf tests?</h2>
+    </header>
+    <ul class="inner">
+      <li class="active">Waiting Timed Tests </li>
+      <li>Non-Waiting Timed Tests </li>
+      <li>Non-Atomic Load Tests </li>
+      <li>Atomic Load Tests </li>
+    </ul> 
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+  
+  <div id="limitations" class="slide"><div>
+  <section>
+    <header>
+      <h2>What are the known limitations?</h2>
+    </header>
+    <ul>
+      <li>elapsed time = total time (setUp(), testXXX(), tearDown()) </li>
+      <li>used to write localized performance unit tests
+      <ul><li>not intended to be a full-fledged load testing or performance profiling tool</li><li>nor is it intended to replace the use of these tools</li></ul></li>
+      <li>performance of your tests can degrade significantly<ul><li>actual threshold number is JVM specific</li></ul></li>
+        
+    </ul> 
+    <footer class="notes">
+    </footer>
+  </section>
+</div></div>
+
+<div id="thanks" class="slide"><div>
+  <section>
+    <header>
+      <h2>Thanks</h2>
+
+    </header>
+      <ul>
+        <li>http://github.com/alexlakatos/slides-junitperf</li>
+        <li>ateam@softvision.ro</li>
+      </ul>
+    <ul class="oneline demourl">
+      <li>Alex Lakatos, Florin Strugariu</li>
+      <li><a href="http://twitter.com/">SoftVision</a></li>
+      <li><a href="http://github.com/alexlakatos/slides-junitperf">
+          http://github.com/alexlakatos/slides-junitperf
+      </a></li>
+    </ul>
+  <footer class="notes">
+  </footer>
+  </section>
+</div></div>
+
+<div class="progress"><div></div></div>
+<!-- 
+    ^ don't like a progress bar? just delete this DIV
+  -->
+<script src="scripts/script.js"></script>
+<!-- Copyright © 2010–2012 Vadim Makeev — pepelsbey.net -->
+</body>
+</html>
